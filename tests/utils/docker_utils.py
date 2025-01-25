@@ -54,3 +54,6 @@ def start_database_container():
 
     while not is_container_ready(container):
         time.sleep(1)
+
+    if not wait_for_stable_status(container):
+        raise RuntimeError("Container did not stabilize.")
