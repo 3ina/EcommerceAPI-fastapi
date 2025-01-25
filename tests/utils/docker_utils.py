@@ -1,5 +1,11 @@
 import docker
 from docker.errors import NotFound
+from docker.models.containers import Container
+
+def is_container_ready(container : Container) -> bool:
+    container.reload()
+    return container.status == 'running'
+
 
 def start_database_container():
     client = docker.from_env()
