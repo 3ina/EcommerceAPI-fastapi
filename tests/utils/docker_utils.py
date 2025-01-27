@@ -27,7 +27,7 @@ def wait_for_stable_status(container : Container,stable_duration=3,interval=1) -
     return False
 
 
-def start_database_container():
+def start_database_container() -> Container:
     client = docker.from_env()
     container_name = "test-db"
 
@@ -62,3 +62,5 @@ def start_database_container():
 
     if not wait_for_stable_status(container):
         raise RuntimeError("Container did not stabilize.")
+
+    return container
