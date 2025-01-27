@@ -1,8 +1,10 @@
+import os
 import time
-
 import docker
 from docker.errors import NotFound
 from docker.models.containers import Container
+
+scripts_directory = os.path.abspath("./scripts")
 
 def is_container_ready(container : Container) -> bool:
     container.reload()
@@ -20,7 +22,6 @@ def wait_for_stable_status(container : Container,stable_duration=3,interval=1) -
 
         if stable_count >= stable_duration / interval:
             return True
-
         time.sleep(interval)
 
     return False
@@ -47,7 +48,11 @@ def start_database_container():
         "environment":{
             "POSTGRES_USER":"postgres",
             "POSTGRES_PASSWORD":"postgres",
-        }
+        },
+        "volumes": [
+            f"{scripts_directory}:/docker-entrypoint-initdb.d"
+        ],
+        "network_mode" : "fastapi_development_dev_network"
     }
 
     container = client.containers.run(**container_config)

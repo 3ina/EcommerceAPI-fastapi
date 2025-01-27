@@ -10,11 +10,21 @@ services:
       - ./.env
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
+    networks:
+      - dev_network
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - dev_network
 
-name: fastapi-development
+
+
+networks:
+  dev_network:
+    driver: bridge
+
+name: fastapi_development
