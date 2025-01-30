@@ -1,18 +1,18 @@
-"""
-## Table and Column Validation
-"""
-
-"""
-- [ ] Confirm the presence of all required tables within the database schema.
-"""
+from sqlalchemy.types import Integer,String,Boolean
 
 def test_model_structure_table_exists(db_inspector):
     assert db_inspector.has_table("category")
 
 
-"""
-- [ ] Validate the existence of expected columns in each table, ensuring correct data types.
-"""
+def test_model_structure_column_data_types(db_inspector):
+    table = "category"
+    columns = { column["name"] : column for column in db_inspector.get_columns(table)}
+    assert isinstance(columns["id"]["type"], Integer)
+    assert isinstance(columns["name"]["type"], String)
+    assert isinstance(columns["slug"]["type"], String)
+    assert isinstance(columns["is_active"]["type"], Boolean)
+    assert isinstance(columns["level"]["type"], Integer)
+    assert isinstance(columns["parent_id"]["type"], Integer)
 
 """
 - [ ] Verify nullable or not nullable fields
