@@ -28,11 +28,9 @@ def migrate_to_db(
         alembic_cfg.set_main_option("script_location", script_location)
 
         if connection is not None:
+            TEST_DATABASE_URL = os.environ.get('TEST_DATABASE_URL')
             alembic_cfg.attributes["connection"] = connection
             logger.info("Using provided database connection for migrations.")
-        else:
-            # Use the testdb section in alembic.ini
-            TEST_DATABASE_URL = os.environ.get('TEST_DATABASE_URL')
             alembic_cfg.set_main_option("sqlalchemy.url", TEST_DATABASE_URL)
             logger.info("Using testdb configuration from alembic.ini.")
 
