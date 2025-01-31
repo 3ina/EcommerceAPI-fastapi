@@ -37,49 +37,31 @@ target_metadata = models.Base.metadata
 
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode."""
-    # Determine the environment (e.g., dev or test)
-    environment = os.getenv("ENVIRONMENT", "dev")  # Default to 'dev'
-    section = f"{environment}db"
-
-    # Get the database URL from the appropriate section
-    url = config.get_section_option(section, "sqlalchemy.url")
-    if not url:
-        raise ValueError(f"Database URL for section '{section}' is not configured.")
-
+    url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
+
     with context.begin_transaction():
         context.run_migrations()
 
+
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode."""
-    # Determine the environment (e.g., dev or test)
-    environment = os.getenv("ENVIRONMENT", "dev")  # Default to 'dev'
-    section = f"{environment}db"
-
-    # Get the database URL from the appropriate section
-    url = config.get_section_option(section, "sqlalchemy.url")
-    if not url:
-        raise ValueError(f"Database URL for section '{section}' is not configured.")
-
-    # Create the engine
     connectable = engine_from_config(
-        {**config.get_section(section, {}), "sqlalchemy.url": url},
+        context.config.get_section(context.config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
+
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
