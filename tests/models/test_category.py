@@ -36,13 +36,15 @@ def test_model_structure_column_constraints(db_inspector):
     constraints = db_inspector.get_check_constraints(table)
     assert any(constraint["name"] == "name_length_check" for constraint in constraints)
     assert any(constraint["name"] == "slug_length_check" for constraint in constraints)
-"""
-- [ ] Verify the correctness of default values for relevant columns.
-"""
 
-"""
-- [ ] Ensure that column lengths align with defined requirements.
-"""
+
+
+def test_model_structure_default_value(db_inspector):
+    table = "category"
+    columns = { column["name"] : column for column in db_inspector.get_columns(table)}
+
+    assert columns["is_active"]["default"] == "false"
+    assert columns["level"]["default"] == "100"
 
 """
 - [ ]  Validate the enforcement of unique constraints for columns requiring unique values.
