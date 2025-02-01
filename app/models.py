@@ -3,7 +3,7 @@ from .db_connection import Base
 from sqlalchemy import (
     Column,
     INTEGER,
-    String, Boolean, Integer, ForeignKey, CheckConstraint
+    String, Boolean, Integer, ForeignKey, CheckConstraint, UniqueConstraint
 )
 
 class Category(Base):
@@ -18,4 +18,6 @@ class Category(Base):
     __table_args__ = (
         CheckConstraint("LENGTH(name) > 0",name="name_length_check"),
         CheckConstraint("LENGTH(slug) > 0", name="slug_length_check"),
+        UniqueConstraint('name', 'level', name="uq_category_name_level"),
+        UniqueConstraint( 'slug', name="uq_category_slug"),
     )
