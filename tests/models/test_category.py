@@ -46,6 +46,9 @@ def test_model_structure_default_value(db_inspector):
     assert columns["is_active"]["default"] == "false"
     assert columns["level"]["default"] == "100"
 
-"""
-- [ ]  Validate the enforcement of unique constraints for columns requiring unique values.
-"""
+
+def test_model_structure_column_lengths(db_inspector):
+    table = "category"
+    columns = {column["name"] : column for column in db_inspector.get_columns(table)}
+    assert columns["name"]["type"].length == 100
+    assert columns["slug"]["type"].length == 120
