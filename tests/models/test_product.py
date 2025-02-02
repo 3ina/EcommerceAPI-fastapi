@@ -45,5 +45,5 @@ def test_model_structure_nullable_constraints(db_inspector):
 
     for column in columns:
         column_name = column["name"]
-        assert column["nullable"]  == expected_nullable[column_name],,f"column {column_name} is not nullable as expected"
+        assert column["nullable"]  == expected_nullable[column_name],f"column {column_name} is not nullable as expected"
 
