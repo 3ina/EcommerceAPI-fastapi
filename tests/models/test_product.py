@@ -53,3 +53,14 @@ def test_model_structure_column_constraints(db_inspector):
     constraints = db_inspector.get_check_constraints(table)
     assert any(constraint["name"] == "product_name_length_check" for constraint in constraints)
     assert any(constraint["name"] == "product_slug_length_check" for constraint in constraints)
+
+
+def test_model_structure_default_values(db_inspector):
+    table = "product"
+    columns = {column["name"] : column for column in db_inspector.get_columns(table)}
+
+    assert columns["is_digital"]["default"] == "false"
+    assert columns["is_active"]["default"] == "false"
+    assert columns["stock_status"]["default"] == "'oos'::status_enum"
+
+
