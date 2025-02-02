@@ -34,8 +34,8 @@ def test_model_structure_nullable_constraints(db_inspector):
 def test_model_structure_column_constraints(db_inspector):
     table = "category"
     constraints = db_inspector.get_check_constraints(table)
-    assert any(constraint["name"] == "name_length_check" for constraint in constraints)
-    assert any(constraint["name"] == "slug_length_check" for constraint in constraints)
+    assert any(constraint["name"] == "category_name_length_check" for constraint in constraints)
+    assert any(constraint["name"] == "category_slug_length_check" for constraint in constraints)
 
 
 
