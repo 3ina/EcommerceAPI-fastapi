@@ -47,3 +47,9 @@ def test_model_structure_nullable_constraints(db_inspector):
         column_name = column["name"]
         assert column["nullable"]  == expected_nullable[column_name],f"column {column_name} is not nullable as expected"
 
+
+def test_model_structure_column_constraints(db_inspector):
+    table = "product"
+    constraints = db_inspector.get_check_constraints(table)
+    assert any(constraint["name"] == "product_name_length_check" for constraint in constraints)
+    assert any(constraint["name"] == "product_slug_length_check" for constraint in constraints)
