@@ -68,3 +68,14 @@ def test_model_structure_column_foreign_key(db_inspector):
     assert category_foreign_key is not None
 
 
+def test_model_structure_unique_constraints(db_inspector):
+    table = "product_line"
+    constraints = db_inspector.get_unique_constraints(table)
+
+    assert any(
+        constraint["name"] == "uq_product_line_sku" for constraint in constraints
+    )
+    assert any(
+        constraint["name"] == "uq_product_line_order_product_id"
+        for constraint in constraints
+    )
