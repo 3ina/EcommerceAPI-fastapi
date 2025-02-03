@@ -21,7 +21,7 @@ def test_model_structure_column_data_types(db_inspector):
 
 
 def test_model_structure_nullable_constraints(db_inspector):
-    table = "product"
+    table = "product_line"
     columns = db_inspector.get_columns(table)
 
     expected_nullable  = {
@@ -40,5 +40,12 @@ def test_model_structure_nullable_constraints(db_inspector):
     for column in columns:
         column_name = column["name"]
         assert column["nullable"]  == expected_nullable[column_name],f"column {column_name} is not nullable as expected"
+
+
+def test_model_structure_column_constraints(db_inspector):
+    table = "product_line"
+    constraints = db_inspector.get_check_constraints(table)
+    assert any(constraint["name"] == "product_line_order_range" for constraint in constraints)
+    assert any(constraint["name"] == "product_line_max_price_value" for constraint in constraints)
 
 
