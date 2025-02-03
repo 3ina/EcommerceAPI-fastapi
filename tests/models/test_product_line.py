@@ -62,7 +62,7 @@ def test_model_structure_column_foreign_key(db_inspector):
     table = "product_line"
     foreign_keys = db_inspector.get_foreign_key(table)
     category_foreign_key = next(
-        (for fk in foreign_keys if fk["constrained_columns"] == {"category_id"}),
+        (fk for fk in foreign_keys if fk["constrained_columns"] == {"category_id"}),
         None
     )
     assert category_foreign_key is not None
