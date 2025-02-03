@@ -49,3 +49,10 @@ def test_model_structure_column_constraints(db_inspector):
     assert any(constraint["name"] == "product_line_max_price_value" for constraint in constraints)
 
 
+def test_model_structure_default_values(db_inspector):
+    table = "product_line"
+    columns = {column["name"] : column for column in db_inspector.get_columns(table)}
+
+    assert columns["stock_qty"]["default"] == "0"
+    assert columns["is_active"]["default"] == "false"
+
