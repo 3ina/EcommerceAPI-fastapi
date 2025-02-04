@@ -41,3 +41,10 @@ def test_model_structure_column_constraints(db_inspector):
         constraint["name"] == "seasonal_event_name_length_check"
         for constraint in constraints
     )
+
+
+def test_model_structure_column_lengths(db_inspector):
+    table = "seasonal_event"
+    columns = {column["name"]: column for column in db_inspector.get_columns(table)}
+
+    assert columns["name"]["type"].length == 100
