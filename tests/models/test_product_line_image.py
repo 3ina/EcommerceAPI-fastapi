@@ -88,3 +88,11 @@ def test_model_structure_column_lengths(db_inspector):
 
 
 
+def test_model_structure_unique_constraints(db_inspector):
+    table = "product_image"
+    constraints = db_inspector.get_unique_constraints(table)
+
+    assert any(
+        constraint["name"] == "uq_product_image_order_product_line_id"
+        for constraint in constraints
+    )
