@@ -13,3 +13,21 @@ def test_model_structure_column_data_types(db_inspector):
     assert isinstance(columns["start_date"]["type"], DateTime)
     assert isinstance(columns["end_date"]["type"], DateTime)
     assert isinstance(columns["name"]["type"], String)
+
+
+def test_model_structure_nullable_constraints(db_inspector):
+    table = "seasonal_event"
+    columns = db_inspector.get_columns(table)
+
+    expected_nullable = {
+        "id": False,
+        "start_date": False,
+        "end_date": False,
+        "name": False,
+    }
+
+    for column in columns:
+        column_name = column["name"]
+        assert column["nullable"] == expected_nullable.get(
+            column_name
+        ), f"column '{column_name}' is not nullable as expected"
