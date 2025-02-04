@@ -57,3 +57,24 @@ def test_model_structure_foreign_key(db_inspector):
     assert product_image_foreign_key is not None
 
 
+
+
+
+def test_model_structure_column_constraints(db_inspector):
+    table = "product_image"
+    constraints = db_inspector.get_check_constraints(table)
+
+    assert any(
+        constraint["name"] == "product_image_order_range" for constraint in constraints
+    )
+    assert any(
+        constraint["name"] == "product_image_alternative_length_check"
+        for constraint in constraints
+    )
+    assert any(
+        constraint["name"] == "product_image_url_length_check"
+        for constraint in constraints
+    )
+
+
+
