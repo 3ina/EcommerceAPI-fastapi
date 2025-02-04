@@ -78,3 +78,13 @@ def test_model_structure_column_constraints(db_inspector):
 
 
 
+
+def test_model_structure_column_lengths(db_inspector):
+    table = "product_image"
+    columns = {columns["name"]: columns for columns in db_inspector.get_columns(table)}
+
+    assert columns["alternative_text"]["type"].length == 100
+    assert columns["url"]["type"].length == 100
+
+
+
