@@ -42,3 +42,18 @@ def test_model_structure_nullable_constraints(db_inspector):
         ), f"column '{column_name}' is not nullable as expected"
 
 
+
+def test_model_structure_foreign_key(db_inspector):
+    table = "product_image"
+    foreign_keys = db_inspector.get_foreign_keys(table)
+    product_image_foreign_key = next(
+        (
+            fk
+            for fk in foreign_keys
+            if set(fk["constrained_columns"]) == {"product_line_id"}
+        ),
+        None,
+    )
+    assert product_image_foreign_key is not None
+
+
