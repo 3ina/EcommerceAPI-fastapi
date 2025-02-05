@@ -20,7 +20,7 @@ def test_model_structure_nullable_constraints(db_inspector):
     expected_nullable = {
         "id" : False,
         "name" : False,
-        "description" : False,
+        "description" : True,
     }
 
     for column in columns:
@@ -44,15 +44,15 @@ def test_model_structure_column_lengths(db_inspector):
     table = "attribute"
     columns = {column["name"] : column for column in db_inspector.get_columns(table)}
 
-    assert columns["id"]["type"].length == 100
+    assert columns["name"]["type"].length == 100
     assert columns["description"]["type"].length == 100
 
 
 def test_model_structure_unique_constraints(db_inspector):
     table = "attribute"
-    constraint = db_inspector.get_check_constraints(table)
+    constraints = db_inspector.get_unique_constraints(table)
 
     assert any(
                 constraint["name"] == "uq_attribute_name"
-                for constraint in constraint
+                for constraint in constraints
                )
