@@ -39,3 +39,10 @@ def test_model_structure_column_constraints(db_inspector):
         for constraint in constraints
     )
 
+
+def test_model_structure_column_lengths(db_inspector):
+    table = "attribute"
+    columns = {column["name"] : column for column in db_inspector.get_columns(table)}
+
+    assert columns["id"]["type"].length == 100
+    assert columns["description"]["type"].length == 100
