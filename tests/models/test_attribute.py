@@ -46,3 +46,13 @@ def test_model_structure_column_lengths(db_inspector):
 
     assert columns["id"]["type"].length == 100
     assert columns["description"]["type"].length == 100
+
+
+def test_model_structure_unique_constraints(db_inspector):
+    table = "attribute"
+    constraint = db_inspector.get_check_constraints(table)
+
+    assert any(
+                constraint["name"] == "uq_attribute_name"
+                for constraint in constraint
+               )
