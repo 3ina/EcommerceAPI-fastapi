@@ -28,3 +28,14 @@ def test_model_structure_nullable_constraints(db_inspector):
         assert column["nullable"] == expected_nullable.get(column_name, False),f"{column_name} is not nullable"
 
 
+
+
+def test_model_structure_column_constraints(db_inspector):
+    table = "attribute"
+    constraints = db_inspector.get_check_constraints(table)
+
+    assert any(
+        constraint["name"] == "attribute_name_length_check"
+        for constraint in constraints
+    )
+
