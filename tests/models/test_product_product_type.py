@@ -10,7 +10,7 @@ def test_model_structure_table_exists(db_inspector):
 
 def test_model_structure_column_data_types(db_inspector):
     table = "product_product_type"
-    columns = {columns["name"]: columns for columns in db_inspector.get_columns(table)}
+    columns = {column["name"]: column for column in db_inspector.get_columns(table)}
 
     assert isinstance(columns["id"]["type"], Integer)
     assert isinstance(columns["product_id"]["type"], Integer)
