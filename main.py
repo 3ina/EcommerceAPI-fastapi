@@ -1,6 +1,10 @@
 from fastapi import FastAPI
-
+import logging
+import logging.config
 app = FastAPI()
+
+logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
+logger = logging.getLogger(__name__)
 
 @app.get("/")
 async def root():
