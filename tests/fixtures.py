@@ -4,9 +4,14 @@ import time
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
+from fastapi.testclient import TestClient
+
+from main import app
 from .utils.database_utils import migrate_to_db
 from .utils.docker_utils import start_database_container
-@pytest.fixture(scope='session',autouse=True)
+
+
+@pytest.fixture(scope='session',)
 def db_session() -> sessionmaker[Session]:
     container = start_database_container()
     time.sleep(3)
@@ -15,12 +20,18 @@ def db_session() -> sessionmaker[Session]:
     print(engine)
 
     with engine.begin() as connection:
-        migrate_to_db(script_location="migrations",alembic_ini_path="alembic.ini",connection=connection,revision="head")
+        migrate_to_db(script_location="migrations", alembic_ini_path="alembic.ini", connection=connection,
+                      revision="head")
 
-    SessionLocal = sessionmaker(autocommit=False,autoflush=True,bind=engine)
+    SessionLocal = sessionmaker(autocommit=False, autoflush=True, bind=engine)
 
     yield SessionLocal
 
     # container.stop()
     # container.remove()
     engine.dispose()
+
+@pytest.fixture(scope='function')
+def client():
+    with TestClient(app) as _client:
+        yield _client
