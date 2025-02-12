@@ -25,7 +25,7 @@ class Category:
 
 def get_random_category_dict(id_: int = None) -> dict:
     return {
-        "id_": id_ or faker.random_int(1, 1000),
+        "id": id_ or faker.random_int(1, 1000),
         "name": faker.word(),
         "slug": faker.slug(),
         "is_active": faker.boolean(),
