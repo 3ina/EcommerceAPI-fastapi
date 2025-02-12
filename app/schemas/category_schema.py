@@ -15,3 +15,6 @@ class CategoryCreate(CategoryBase):
 
 class CategoryInDB(CategoryBase):
     id : int
+
+class CategoryReturn(CategoryBase):
+    id : int
